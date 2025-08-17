@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Willsyaa 🎉</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: 
+        url('Photo/Confetti.png') center/cover no-repeat,
+        linear-gradient(to bottom, #ff7eb3, #ff758c);
+        text-align: center;
+        color: white;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        margin-top: 30px;
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .player {
+        background: rgba(0,0,0,0.7);
+        border-radius: 20px;
+        padding: 20px;
+        width: 90%;
+        max-width: 350px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .cover {
+        width: 100%;
+        height: 400px; 
+        overflow: hidden; 
+        border-radius: 15px;
+    }
+
+    .cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;      
+        object-position: center top;
+    }
+
+    .song-info {
+        margin: 15px 0;
+    }
+
+    .song-info h2 {
+        font-size: 1.3rem;
+        margin: 5px 0;
+    }
+
+    .song-info p {
+        font-size: 0.9rem;
+        color: #ccc;
+        margin: 0;
+    }
+
+    .controls {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    button, select {
+        background: #1db954;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 10px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover, select:hover {
+        background: #17a84b;
+    }
+
+    .progress-container {
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .progress {
+        flex: 1;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #1db954;
+        border-radius: 5px;
+    }
+
+    .playlist {
+        margin-top: 15px;
+        text-align: left;
+    }
+
+    .playlist-item {
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        color: white;
+    }
+
+    .playlist-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .active {
+        background: rgba(29, 185, 84, 0.2);
+    }
+</style>
+</head>
+<body>
+
+<h1>🎂 Happy Birthday, Willsyaaaa! 🎉</h1>
+<p>Wish you all the best !! (even though you already the best) </p>
+
+<div class="player">
+    <div class="cover">
+        <img src="Photo/Birthday_cake.jpg" alt="Birthday Cover">
+    </div>
+    <div class="song-info">
+        <h2 id="songTitle">Happy Birthday</h2>
+        <p id="songArtist">Various Artists</p>
+    </div>
+
+    <!-- Progress bar + waktu -->
+    <div class="progress-container" id="progressContainer">
+        <span id="currentTime">0:00</span>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <span id="duration">0:00</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button id="prev">⏮️</button>
+        <button id="play">▶️</button>
+        <button id="next">⏭️</button>
+
+    </div>
+
+    <!-- Playlist -->
+    <div class="playlist" id="playlist">
+        <div class="playlist-item active" data-src="Music/Ya Kamu.mp3" data-title="First Sight (?)" data-artist="U are The Best">🎵 Ya Kamu ! </div>
+        <div class="playlist-item" data-src="Music/perfect.mp3" data-title="Perfect" data-artist="Kamuu Lucuu">✨ U Are Perfect</div>
+        <div class="playlist-item" data-src="Music/ada sebuah cerita.mp3" data-title="1 3 4 5 6" data-artist="takda 2nya ">📕 Story ?</div>
+        <div class="playlist-item" data-src="Music/my sunshine.mp3" data-title="Maksa Harus Bahagia" data-artist="Senyumm yee Kamu">🌞 Sunshine</div>
+        <div class="playlist-item" data-src="Music/no matter what.mp3" data-title="Thank you" data-artist="you made me happy">♥️ No Matter What</div>
+    </div>
+</div>
+
+<audio id="audio" src="lagu1.mp3"></audio>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('play');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const rewindBtn = document.getElementById('rewind');
+const forwardBtn = document.getElementById('forward');
+const speedControl = document.getElementById('speedControl');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+const playlistItems = document.querySelectorAll('.playlist-item');
+const songTitle = document.getElementById('songTitle');
+const songArtist = document.getElementById('songArtist');
+
+
+
+
+    window.onload = function() {
+    
+        confetti({
+            particleCount: 300,
+            spread: 5000,
+            origin: { y: 0.2 }
+        });
+
+        // Tambahan efek berulang 
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                spread: 1000,
+                origin: { y: 0.4 }
+            });
+        }, 500);
+
+        setTimeout(() => {
+            confetti({
+                particleCount: 200,
+                spread: 1000,
+                origin: { y: 0.6 }
+            });
+        }, 1000);
+
+        setTimeout(() => {
+            confetti({
+                particleCount: 200,
+                spread: 1000,
+                origin: { y: 0.6 }
+            });
+        }, 1500);
+
+    };
+
+let isPlaying = false;
+let currentTrack = 0;
+
+function loadTrack(index) {
+    const item = playlistItems[index];
+    audio.src = item.getAttribute('data-src');
+    songTitle.textContent = item.getAttribute('data-title');
+    songArtist.textContent = item.getAttribute('data-artist');
+    playlistItems.forEach(el => el.classList.remove('active'));
+    item.classList.add('active');
+}
+
+// ▶️ Play / Pause
+playBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        audio.pause();
+        playBtn.textContent = '▶️';
+    } else {
+        audio.play();
+        playBtn.textContent = '⏸️';
+    }
+    isPlaying = !isPlaying;
+});
+
+// ⏮ Previous
+prevBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack - 1 + playlistItems.length) % playlistItems.length;
+    loadTrack(currentTrack);
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = '⏸️';
+});
+
+// ⏭ Next
+nextBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack + 1) % playlistItems.length;
+    loadTrack(currentTrack);
+    audio.play();
+    isPlaying = true;
+    playBtn.textContent = '⏸️';
+});
+
+
+
+// Klik progress bar untuk skip
+progressContainer.addEventListener('click', (e) => {
+    const progressBox = progressContainer.querySelector('.progress');
+    const width = progressBox.clientWidth;
+    const clickX = e.offsetX - currentTimeEl.offsetWidth - 10; 
+    const duration = audio.duration;
+    if (clickX >= 0) {
+        audio.currentTime = (clickX / width) * duration;
+    }
+});
+
+// Format waktu m:SS
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// ⏱️ Update waktu & progress bar
+audio.addEventListener('timeupdate', () => {
+    const { currentTime, duration } = audio;
+    progressBar.style.width = `${(currentTime / duration) * 100}%`;
+    currentTimeEl.textContent = formatTime(currentTime);
+    if (!isNaN(duration)) {
+        durationEl.textContent = formatTime(duration);
+    }
+});
+
+// Playlist klik
+playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        currentTrack = index;
+        loadTrack(currentTrack);
+        audio.play();
+        isPlaying = true;
+        playBtn.textContent = '⏸️';
+    });
+});
+
+// Load awal
+loadTrack(currentTrack);
+</script>
+</body>
+</html>
